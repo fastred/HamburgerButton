@@ -67,8 +67,10 @@ class HamburgerButton: UIButton {
 
     var showsBack: Bool = false {
         didSet {
-            let duration = 0.42
-
+            // There's many animations so it's easier to set up duration and timing function at once.
+            CATransaction.begin()
+            CATransaction.setAnimationDuration(0.42)
+            CATransaction.setAnimationTimingFunction(CAMediaTimingFunction.swiftOut())
 
             let middleRotation = CAKeyframeAnimation(keyPath: "transform")
 
@@ -78,9 +80,6 @@ class HamburgerButton: UIButton {
                 NSValue(CATransform3D: CATransform3DRotate(middle.transform, middleTarget / 2, 0, 0, 1)),
                 NSValue(CATransform3D: CATransform3DRotate(middle.transform, middleTarget, 0, 0, 1))
             ]
-
-            middleRotation.timingFunction = CAMediaTimingFunction.swiftOut()
-            middleRotation.duration = duration
             middle.ahk_applyKeyframeValuesAnimation(middleRotation)
 
             let wholeTopRotation: CGFloat = showsBack ? CGFloat(M_PI + M_PI_4) : CGFloat(-M_PI - M_PI_4)
@@ -96,9 +95,6 @@ class HamburgerButton: UIButton {
             topRotation.calculationMode = kCAAnimationCubic
             topRotation.keyTimes = [0.0, 0.33, 0.73, 1.0];
 
-            topRotation.duration = duration
-            topRotation.timingFunction = CAMediaTimingFunction.swiftOut()
-
             top.ahk_applyKeyframeValuesAnimation(topRotation)
 
             let endPosition = CGPoint(x: width / 2, y: showsBack ? bottomYPosition : topYPosition)
@@ -108,22 +104,16 @@ class HamburgerButton: UIButton {
 
             let topPosition = CAKeyframeAnimation(keyPath: "position")
             topPosition.path = halfCirclePath.CGPath
-            topPosition.duration = duration
-            topPosition.timingFunction = CAMediaTimingFunction.swiftOut()
             top.ahk_applyKeyframePathAnimation(topPosition, endValue: NSValue(CGPoint: endPosition))
 
 
             let topStrokeStart = CABasicAnimation(keyPath: "strokeStart")
             topStrokeStart.toValue = showsBack ? 0.3 : 0.0
-            topStrokeStart.duration = duration
-            topStrokeStart.timingFunction = CAMediaTimingFunction.swiftOut()
             top.ahk_applyAnimation(topStrokeStart)
 
 
             let strokeEnd = CABasicAnimation(keyPath: "strokeEnd")
             strokeEnd.toValue = showsBack ? 0.85 : 1.0
-            strokeEnd.duration = duration
-            strokeEnd.timingFunction = CAMediaTimingFunction.swiftOut()
             middle.ahk_applyAnimation(strokeEnd)
 
 
@@ -134,14 +124,10 @@ class HamburgerButton: UIButton {
                 NSValue(CATransform3D: CATransform3DRotate(bottom.transform, wholeBottomRotation / 3, 0, 0, 1)),
                 NSValue(CATransform3D: CATransform3DRotate(bottom.transform, wholeBottomRotation / 3 * 2, 0, 0, 1)),
                 NSValue(CATransform3D: CATransform3DRotate(bottom.transform, wholeBottomRotation, 0, 0, 1))]
-            bottomRotation.duration = duration
-            bottomRotation.timingFunction = CAMediaTimingFunction.swiftOut()
             bottom.ahk_applyKeyframeValuesAnimation(bottomRotation)
 
             let bottomStrokeStart = CABasicAnimation(keyPath: "strokeStart")
             bottomStrokeStart.toValue = showsBack ? 0.3 : 0.0
-            bottomStrokeStart.duration = duration
-            bottomStrokeStart.timingFunction = CAMediaTimingFunction.swiftOut()
             bottom.ahk_applyAnimation(bottomStrokeStart)
 
             let bottomEndPosition = CGPoint(x: width / 2, y: showsBack ? topYPosition : bottomYPosition)
@@ -151,9 +137,9 @@ class HamburgerButton: UIButton {
 
             let bottomPosition = CAKeyframeAnimation(keyPath: "position")
             bottomPosition.path = bottomCirclePath.CGPath
-            bottomPosition.duration = duration
-            bottomPosition.timingFunction = CAMediaTimingFunction.swiftOut()
             bottom.ahk_applyKeyframePathAnimation(bottomPosition, endValue: NSValue(CGPoint: bottomEndPosition))
+
+            CATransaction.commit()
         }
     }
 }
