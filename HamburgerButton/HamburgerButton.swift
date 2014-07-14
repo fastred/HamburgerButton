@@ -17,28 +17,32 @@ class HamburgerButton: UIButton {
     let bottom: CAShapeLayer! = CAShapeLayer()
     let width: Float = 18
     let height: Float = 16
+    let topYPosition: Float = 2
+    let middleYPosition: Float = 7
+    let bottomYPosition: Float = 12
 
     init(frame: CGRect) {
         super.init(frame: frame)
-
         commonInit()
     }
 
     init(coder aDecoder: NSCoder!) {
         super.init(coder: aDecoder)
-
         commonInit()
     }
 
     func commonInit() {
+        let lineWidth: Float = 2
         let path = UIBezierPath()
-        path.moveToPoint(CGPoint(x: 1, y: 0))
-        path.addLineToPoint(CGPoint(x: width - 1, y: 0))
+        path.moveToPoint(CGPoint(x: lineWidth/2, y: 0))
+        path.addLineToPoint(CGPoint(x: width - lineWidth/2, y: 0))
 
         for shapeLayer in [top, middle, bottom] {
             shapeLayer.path = path.CGPath
             shapeLayer.lineWidth = 2
             shapeLayer.strokeColor = UIColor.whiteColor().CGColor
+
+            // Disables implicit animations.
             shapeLayer.actions = [
                 "strokeStart": NSNull(),
                 "strokeEnd": NSNull(),
@@ -52,9 +56,9 @@ class HamburgerButton: UIButton {
             layer.addSublayer(shapeLayer)
         }
 
-        top.position = CGPoint(x: width / 2, y: 2)
-        middle.position = CGPoint(x: width / 2, y: 7)
-        bottom.position = CGPoint(x: width / 2, y: 12)
+        top.position = CGPoint(x: width / 2, y: topYPosition)
+        middle.position = CGPoint(x: width / 2, y: middleYPosition)
+        bottom.position = CGPoint(x: width / 2, y: bottomYPosition)
     }
 
     override func intrinsicContentSize() -> CGSize {
@@ -64,6 +68,7 @@ class HamburgerButton: UIButton {
     var showsBack: Bool = false {
         didSet {
             let duration = 0.42
+
 
             let middleRotation = CAKeyframeAnimation(keyPath: "transform")
 
@@ -86,6 +91,8 @@ class HamburgerButton: UIButton {
             NSValue(CATransform3D: CATransform3DRotate(top.transform, wholeTopRotation / 3 * 2, 0, 0, 1)),
             NSValue(CATransform3D: CATransform3DRotate(top.transform, wholeTopRotation, 0, 0, 1))
             ]
+
+            // Used because it was hard to animate position of segments' such that their ends form the arrow's tip.
             topRotation.calculationMode = kCAAnimationCubic
             topRotation.keyTimes = [0.0, 0.33, 0.73, 1.0];
 
@@ -94,10 +101,10 @@ class HamburgerButton: UIButton {
 
             top.ahk_applyKeyframeValuesAnimation(topRotation)
 
-            let endPosition = showsBack ? CGPoint(x: width / 2, y: 12) : CGPoint(x: width / 2, y: 2)
+            let endPosition = CGPoint(x: width / 2, y: showsBack ? bottomYPosition : topYPosition)
             let halfCirclePath = UIBezierPath()
             halfCirclePath.moveToPoint(top.position)
-            halfCirclePath.addQuadCurveToPoint(endPosition, controlPoint: CGPoint(x: width, y: 6))
+            halfCirclePath.addQuadCurveToPoint(endPosition, controlPoint: CGPoint(x: width, y: middleYPosition - 1))
 
             let topPosition = CAKeyframeAnimation(keyPath: "position")
             topPosition.path = halfCirclePath.CGPath
@@ -137,10 +144,10 @@ class HamburgerButton: UIButton {
             bottomStrokeStart.timingFunction = CAMediaTimingFunction.swiftOut()
             bottom.ahk_applyAnimation(bottomStrokeStart)
 
-            let bottomEndPosition = showsBack ? CGPoint(x: width / 2, y: 2) : CGPoint(x: width / 2, y: 12)
+            let bottomEndPosition = CGPoint(x: width / 2, y: showsBack ? topYPosition : bottomYPosition)
             let bottomCirclePath = UIBezierPath()
             bottomCirclePath.moveToPoint(bottom.position)
-            bottomCirclePath.addQuadCurveToPoint(bottomEndPosition, controlPoint: CGPoint(x: 0, y: 6))
+            bottomCirclePath.addQuadCurveToPoint(bottomEndPosition, controlPoint: CGPoint(x: 0, y: middleYPosition - 1))
 
             let bottomPosition = CAKeyframeAnimation(keyPath: "position")
             bottomPosition.path = bottomCirclePath.CGPath
