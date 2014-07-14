@@ -35,8 +35,8 @@ class HamburgerButton: UIButton {
         let lineWidth: Float = 2
 
         let path = UIBezierPath()
-        path.moveToPoint(CGPoint(x: lineWidth / 2, y: 0))
-        path.addLineToPoint(CGPoint(x: width - lineWidth / 2, y: 0))
+        path.moveToPoint(CGPoint(x: 0, y: 0))
+        path.addLineToPoint(CGPoint(x: width, y: 0))
 
         for shapeLayer in [top, middle, bottom] {
             shapeLayer.path = path.CGPath
@@ -76,17 +76,18 @@ class HamburgerButton: UIButton {
 
             let strokeStartNewValue = showsMenu ? 0.0 : 0.3
             let positionPathControlPointY = bottomYPosition / 2
+            let verticalOffsetInRotatedState: CGFloat = 0.75
 
             let topRotation = CAKeyframeAnimation(keyPath: "transform")
             topRotation.values = rotationValuesFromTransform(top.transform,
                 endValue: showsMenu ? CGFloat(-M_PI - M_PI_4) : CGFloat(M_PI + M_PI_4))
-            // Kind of a workaround. Used because it was hard to animate positions of segments' such that their ends form the arrow's tip.
+            // Kind of a workaround. Used because it was hard to animate positions of segments' such that their ends form the arrow's tip and don't cross each other.
             topRotation.calculationMode = kCAAnimationCubic
-            topRotation.keyTimes = [0.0, 0.33, 0.73, 1.0];
+            topRotation.keyTimes = [0.0, 0.33, 0.73, 1.0]
             top.ahk_applyKeyframeValuesAnimation(topRotation)
 
             let topPosition = CAKeyframeAnimation(keyPath: "position")
-            let topPositionEndPoint = CGPoint(x: width / 2, y: showsMenu ? topYPosition : bottomYPosition)
+            let topPositionEndPoint = CGPoint(x: width / 2, y: showsMenu ? topYPosition : bottomYPosition + verticalOffsetInRotatedState)
             topPosition.path = quadBezierCurveFrom(top.position,
                 toPoint: topPositionEndPoint,
                 controlPoint: CGPoint(x: width, y: positionPathControlPointY)).CGPath
@@ -110,10 +111,12 @@ class HamburgerButton: UIButton {
             let bottomRotation = CAKeyframeAnimation(keyPath: "transform")
             bottomRotation.values = rotationValuesFromTransform(bottom.transform,
                 endValue: showsMenu ? CGFloat(-M_PI_2 - M_PI_4) : CGFloat(M_PI_2 + M_PI_4))
+            bottomRotation.calculationMode = kCAAnimationCubic
+            bottomRotation.keyTimes = [0.0, 0.33, 0.63, 1.0]
             bottom.ahk_applyKeyframeValuesAnimation(bottomRotation)
 
             let bottomPosition = CAKeyframeAnimation(keyPath: "position")
-            let bottomPositionEndPoint = CGPoint(x: width / 2, y: showsMenu ? bottomYPosition : topYPosition)
+            let bottomPositionEndPoint = CGPoint(x: width / 2, y: showsMenu ? bottomYPosition : topYPosition - verticalOffsetInRotatedState)
             bottomPosition.path = quadBezierCurveFrom(bottom.position,
                 toPoint: bottomPositionEndPoint,
                 controlPoint: CGPoint(x: 0, y: positionPathControlPointY)).CGPath
