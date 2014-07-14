@@ -10,16 +10,17 @@ import UIKit
 
 class ViewController: UIViewController {
                             
+    @IBOutlet var button: HamburgerButton
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+
+        self.button.addTarget(self, action: "toggle:", forControlEvents:.TouchUpInside)
+        self.button.transform = CGAffineTransformMakeScale(2.0, 2.0)
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func toggle(sender: AnyObject!) {
+        self.button.showsBack = !self.button.showsBack
     }
-
-
 }
 
