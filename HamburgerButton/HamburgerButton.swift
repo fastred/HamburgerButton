@@ -72,7 +72,7 @@ class HamburgerButton: UIButton {
             // There's many animations so it's easier to set up duration and timing function at once.
             CATransaction.begin()
             CATransaction.setAnimationDuration(0.4)
-            CATransaction.setAnimationTimingFunction(CAMediaTimingFunction.swiftOut())
+            CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(controlPoints: 0.4, 0.0, 0.2, 1.0))
 
             let strokeStartNewValue = showsMenu ? 0.0 : 0.3
             let positionPathControlPointY = bottomYPosition / 2
@@ -155,12 +155,6 @@ extension CALayer {
 
         self.addAnimation(copy, forKey: copy.keyPath)
         self.setValue(endValue, forKeyPath:copy.keyPath)
-    }
-}
-
-extension CAMediaTimingFunction {
-    class func swiftOut() -> CAMediaTimingFunction {
-        return CAMediaTimingFunction(controlPoints: 0.4, 0.0, 0.2, 1.0)
     }
 }
 
