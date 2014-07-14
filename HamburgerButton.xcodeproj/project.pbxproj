@@ -23,6 +23,13 @@
 			remoteGlobalIDString = A629FF5919741216003FA0FC;
 			remoteInfo = HamburgerButton;
 		};
+		A6BA163819748A9200D0954D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A629FF5219741216003FA0FC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A629FF5919741216003FA0FC;
+			remoteInfo = HamburgerButton;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -144,6 +151,7 @@
 			);
 			dependencies = (
 				A629FF6E19741217003FA0FC /* PBXTargetDependency */,
+				A6BA163919748A9200D0954D /* PBXTargetDependency */,
 			);
 			name = HamburgerButtonTests;
 			productName = HamburgerButtonTests;
@@ -232,6 +240,11 @@
 			isa = PBXTargetDependency;
 			target = A629FF5919741216003FA0FC /* HamburgerButton */;
 			targetProxy = A629FF6D19741217003FA0FC /* PBXContainerItemProxy */;
+		};
+		A6BA163919748A9200D0954D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A629FF5919741216003FA0FC /* HamburgerButton */;
+			targetProxy = A6BA163819748A9200D0954D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -401,6 +414,7 @@
 				A629FF7819741217003FA0FC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A629FF7919741217003FA0FC /* Build configuration list for PBXNativeTarget "HamburgerButtonTests" */ = {
 			isa = XCConfigurationList;
@@ -409,6 +423,7 @@
 				A629FF7B19741217003FA0FC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
