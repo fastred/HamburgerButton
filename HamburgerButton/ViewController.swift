@@ -20,7 +20,7 @@ class ViewController: UIViewController {
     }
 
     func toggle(sender: AnyObject!) {
-        self.button.showsBack = !self.button.showsBack
+        self.button.showsMenu = !self.button.showsMenu
     }
 }
 

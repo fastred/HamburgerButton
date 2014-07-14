@@ -35,8 +35,8 @@ class HamburgerButton: UIButton {
         let lineWidth: Float = 2
 
         let path = UIBezierPath()
-        path.moveToPoint(CGPoint(x: lineWidth/2, y: 0))
-        path.addLineToPoint(CGPoint(x: width - lineWidth/2, y: 0))
+        path.moveToPoint(CGPoint(x: lineWidth / 2, y: 0))
+        path.addLineToPoint(CGPoint(x: width - lineWidth / 2, y: 0))
 
         for shapeLayer in [top, middle, bottom] {
             shapeLayer.path = path.CGPath
@@ -51,7 +51,8 @@ class HamburgerButton: UIButton {
                 "position": NSNull()
             ]
 
-            let strokingPath = CGPathCreateCopyByStrokingPath(shapeLayer.path, nil, 2, kCGLineCapButt, kCGLineJoinMiter, 10)
+            let strokingPath = CGPathCreateCopyByStrokingPath(shapeLayer.path, nil, shapeLayer.lineWidth, kCGLineCapButt, kCGLineJoinMiter, shapeLayer.miterLimit)
+            // Otherwise bounds will be equal to CGRectZero.
             shapeLayer.bounds = CGPathGetPathBoundingBox(strokingPath)
 
             layer.addSublayer(shapeLayer)
@@ -66,58 +67,60 @@ class HamburgerButton: UIButton {
         return CGSize(width: width, height: height)
     }
 
-    var showsBack: Bool = false {
+    var showsMenu: Bool = true {
         didSet {
             // There's many animations so it's easier to set up duration and timing function at once.
             CATransaction.begin()
             CATransaction.setAnimationDuration(0.4)
             CATransaction.setAnimationTimingFunction(CAMediaTimingFunction.swiftOut())
 
-
-            let middleRotation = CAKeyframeAnimation(keyPath: "transform")
-            middleRotation.values = rotationValuesFromTransform(middle.transform,
-                endValue: showsBack ? CGFloat(M_PI) : CGFloat(-M_PI))
-            middle.ahk_applyKeyframeValuesAnimation(middleRotation)
-
-            let middleStrokeEnd = CABasicAnimation(keyPath: "strokeEnd")
-            middleStrokeEnd.toValue = showsBack ? 0.85 : 1.0
-            middle.ahk_applyAnimation(middleStrokeEnd)
-
+            let strokeStartNewValue = showsMenu ? 0.0 : 0.3
+            let positionPathControlPointY = bottomYPosition / 2
 
             let topRotation = CAKeyframeAnimation(keyPath: "transform")
             topRotation.values = rotationValuesFromTransform(top.transform,
-                endValue: showsBack ? CGFloat(M_PI + M_PI_4) : CGFloat(-M_PI - M_PI_4))
+                endValue: showsMenu ? CGFloat(-M_PI - M_PI_4) : CGFloat(M_PI + M_PI_4))
             // Kind of a workaround. Used because it was hard to animate positions of segments' such that their ends form the arrow's tip.
             topRotation.calculationMode = kCAAnimationCubic
             topRotation.keyTimes = [0.0, 0.33, 0.73, 1.0];
             top.ahk_applyKeyframeValuesAnimation(topRotation)
 
             let topPosition = CAKeyframeAnimation(keyPath: "position")
-            let topPositionEndPoint = CGPoint(x: width / 2, y: showsBack ? bottomYPosition : topYPosition)
+            let topPositionEndPoint = CGPoint(x: width / 2, y: showsMenu ? topYPosition : bottomYPosition)
             topPosition.path = quadBezierCurveFrom(top.position,
                 toPoint: topPositionEndPoint,
-                controlPoint: CGPoint(x: width, y: middleYPosition - 1)).CGPath
+                controlPoint: CGPoint(x: width, y: positionPathControlPointY)).CGPath
             top.ahk_applyKeyframePathAnimation(topPosition, endValue: NSValue(CGPoint: topPositionEndPoint))
 
             let topStrokeStart = CABasicAnimation(keyPath: "strokeStart")
-            topStrokeStart.toValue = showsBack ? 0.3 : 0.0
+            topStrokeStart.toValue = strokeStartNewValue
             top.ahk_applyAnimation(topStrokeStart)
+
+
+            let middleRotation = CAKeyframeAnimation(keyPath: "transform")
+            middleRotation.values = rotationValuesFromTransform(middle.transform,
+                endValue: showsMenu ? CGFloat(-M_PI) : CGFloat(M_PI))
+            middle.ahk_applyKeyframeValuesAnimation(middleRotation)
+
+            let middleStrokeEnd = CABasicAnimation(keyPath: "strokeEnd")
+            middleStrokeEnd.toValue = showsMenu ? 1.0 : 0.85
+            middle.ahk_applyAnimation(middleStrokeEnd)
 
 
             let bottomRotation = CAKeyframeAnimation(keyPath: "transform")
             bottomRotation.values = rotationValuesFromTransform(bottom.transform,
-                endValue: showsBack ? CGFloat(M_PI_2 + M_PI_4) : CGFloat(-M_PI_2 - M_PI_4))
+                endValue: showsMenu ? CGFloat(-M_PI_2 - M_PI_4) : CGFloat(M_PI_2 + M_PI_4))
             bottom.ahk_applyKeyframeValuesAnimation(bottomRotation)
 
             let bottomPosition = CAKeyframeAnimation(keyPath: "position")
-            let bottomPositionEndPoint = CGPoint(x: width / 2, y: showsBack ? topYPosition : bottomYPosition)
+            let bottomPositionEndPoint = CGPoint(x: width / 2, y: showsMenu ? bottomYPosition : topYPosition)
             bottomPosition.path = quadBezierCurveFrom(bottom.position,
                 toPoint: bottomPositionEndPoint,
-                controlPoint: CGPoint(x: 0, y: middleYPosition - 1)).CGPath
+                controlPoint: CGPoint(x: 0, y: positionPathControlPointY)).CGPath
             bottom.ahk_applyKeyframePathAnimation(bottomPosition, endValue: NSValue(CGPoint: bottomPositionEndPoint))
 
             let bottomStrokeStart = CABasicAnimation(keyPath: "strokeStart")
-            bottomStrokeStart.toValue = showsBack ? 0.3 : 0.0
+            bottomStrokeStart.toValue = strokeStartNewValue
             bottom.ahk_applyAnimation(bottomStrokeStart)
 
 
@@ -146,6 +149,7 @@ extension CALayer {
         self.setValue(copy.values[copy.values.count - 1], forKeyPath:copy.keyPath)
     }
 
+    // TODO: endValue could be removed from the definition, because it's possible to get it from the path (see: CGPathApply).
     func ahk_applyKeyframePathAnimation(animation: CAKeyframeAnimation, endValue: NSValue) {
         let copy = animation.copy() as CAKeyframeAnimation
 
