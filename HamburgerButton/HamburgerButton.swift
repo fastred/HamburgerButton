@@ -72,72 +72,66 @@ class HamburgerButton: UIButton {
             CATransaction.setAnimationDuration(0.42)
             CATransaction.setAnimationTimingFunction(CAMediaTimingFunction.swiftOut())
 
+
             let middleRotation = CAKeyframeAnimation(keyPath: "transform")
-
-            let middleTarget: CGFloat = showsBack ? CGFloat(M_PI) : CGFloat(-M_PI)
-
+            let middleRotationTarget: CGFloat = showsBack ? CGFloat(M_PI) : CGFloat(-M_PI)
             middleRotation.values = [NSValue(CATransform3D: middle.transform),
-                NSValue(CATransform3D: CATransform3DRotate(middle.transform, middleTarget / 2, 0, 0, 1)),
-                NSValue(CATransform3D: CATransform3DRotate(middle.transform, middleTarget, 0, 0, 1))
+                NSValue(CATransform3D: CATransform3DRotate(middle.transform, middleRotationTarget / 2, 0, 0, 1)),
+                NSValue(CATransform3D: CATransform3DRotate(middle.transform, middleRotationTarget, 0, 0, 1))
             ]
             middle.ahk_applyKeyframeValuesAnimation(middleRotation)
 
-            let wholeTopRotation: CGFloat = showsBack ? CGFloat(M_PI + M_PI_4) : CGFloat(-M_PI - M_PI_4)
+            let middleStrokeEnd = CABasicAnimation(keyPath: "strokeEnd")
+            middleStrokeEnd.toValue = showsBack ? 0.85 : 1.0
+            middle.ahk_applyAnimation(middleStrokeEnd)
+
 
             let topRotation = CAKeyframeAnimation(keyPath: "transform")
+            let topRotationTarget: CGFloat = showsBack ? CGFloat(M_PI + M_PI_4) : CGFloat(-M_PI - M_PI_4)
             topRotation.values = [NSValue(CATransform3D: top.transform),
-                NSValue(CATransform3D: CATransform3DRotate(top.transform, wholeTopRotation / 3, 0, 0, 1)),
-            NSValue(CATransform3D: CATransform3DRotate(top.transform, wholeTopRotation / 3 * 2, 0, 0, 1)),
-            NSValue(CATransform3D: CATransform3DRotate(top.transform, wholeTopRotation, 0, 0, 1))
+                NSValue(CATransform3D: CATransform3DRotate(top.transform, topRotationTarget / 3, 0, 0, 1)),
+                NSValue(CATransform3D: CATransform3DRotate(top.transform, topRotationTarget / 3 * 2, 0, 0, 1)),
+                NSValue(CATransform3D: CATransform3DRotate(top.transform, topRotationTarget, 0, 0, 1))
             ]
-
-            // Used because it was hard to animate position of segments' such that their ends form the arrow's tip.
+            // Kind of a work around. Used because it was hard to animate position of segments' such that their ends form the arrow's tip.
             topRotation.calculationMode = kCAAnimationCubic
             topRotation.keyTimes = [0.0, 0.33, 0.73, 1.0];
-
             top.ahk_applyKeyframeValuesAnimation(topRotation)
 
-            let endPosition = CGPoint(x: width / 2, y: showsBack ? bottomYPosition : topYPosition)
-            let halfCirclePath = UIBezierPath()
-            halfCirclePath.moveToPoint(top.position)
-            halfCirclePath.addQuadCurveToPoint(endPosition, controlPoint: CGPoint(x: width, y: middleYPosition - 1))
-
             let topPosition = CAKeyframeAnimation(keyPath: "position")
-            topPosition.path = halfCirclePath.CGPath
-            top.ahk_applyKeyframePathAnimation(topPosition, endValue: NSValue(CGPoint: endPosition))
-
+            let topPositionTarget = CGPoint(x: width / 2, y: showsBack ? bottomYPosition : topYPosition)
+            let topPositionPath = UIBezierPath()
+            topPositionPath.moveToPoint(top.position)
+            topPositionPath.addQuadCurveToPoint(topPositionTarget, controlPoint: CGPoint(x: width, y: middleYPosition - 1))
+            topPosition.path = topPositionPath.CGPath
+            top.ahk_applyKeyframePathAnimation(topPosition, endValue: NSValue(CGPoint: topPositionTarget))
 
             let topStrokeStart = CABasicAnimation(keyPath: "strokeStart")
             topStrokeStart.toValue = showsBack ? 0.3 : 0.0
             top.ahk_applyAnimation(topStrokeStart)
 
 
-            let strokeEnd = CABasicAnimation(keyPath: "strokeEnd")
-            strokeEnd.toValue = showsBack ? 0.85 : 1.0
-            middle.ahk_applyAnimation(strokeEnd)
-
-
-            let wholeBottomRotation: CGFloat = showsBack ? CGFloat(M_PI_2 + M_PI_4) : CGFloat(-M_PI_2 - M_PI_4)
-
+            let bottomRotationTarget: CGFloat = showsBack ? CGFloat(M_PI_2 + M_PI_4) : CGFloat(-M_PI_2 - M_PI_4)
             let bottomRotation = CAKeyframeAnimation(keyPath: "transform")
             bottomRotation.values = [NSValue(CATransform3D: bottom.transform),
-                NSValue(CATransform3D: CATransform3DRotate(bottom.transform, wholeBottomRotation / 3, 0, 0, 1)),
-                NSValue(CATransform3D: CATransform3DRotate(bottom.transform, wholeBottomRotation / 3 * 2, 0, 0, 1)),
-                NSValue(CATransform3D: CATransform3DRotate(bottom.transform, wholeBottomRotation, 0, 0, 1))]
+                NSValue(CATransform3D: CATransform3DRotate(bottom.transform, bottomRotationTarget / 3, 0, 0, 1)),
+                NSValue(CATransform3D: CATransform3DRotate(bottom.transform, bottomRotationTarget / 3 * 2, 0, 0, 1)),
+                NSValue(CATransform3D: CATransform3DRotate(bottom.transform, bottomRotationTarget, 0, 0, 1))
+            ]
             bottom.ahk_applyKeyframeValuesAnimation(bottomRotation)
+
+            let bottomPosition = CAKeyframeAnimation(keyPath: "position")
+            let bottomPositionTarget = CGPoint(x: width / 2, y: showsBack ? topYPosition : bottomYPosition)
+            let bottomPositionPath = UIBezierPath()
+            bottomPositionPath.moveToPoint(bottom.position)
+            bottomPositionPath.addQuadCurveToPoint(bottomPositionTarget, controlPoint: CGPoint(x: 0, y: middleYPosition - 1))
+            bottomPosition.path = bottomPositionPath.CGPath
+            bottom.ahk_applyKeyframePathAnimation(bottomPosition, endValue: NSValue(CGPoint: bottomPositionTarget))
 
             let bottomStrokeStart = CABasicAnimation(keyPath: "strokeStart")
             bottomStrokeStart.toValue = showsBack ? 0.3 : 0.0
             bottom.ahk_applyAnimation(bottomStrokeStart)
 
-            let bottomEndPosition = CGPoint(x: width / 2, y: showsBack ? topYPosition : bottomYPosition)
-            let bottomCirclePath = UIBezierPath()
-            bottomCirclePath.moveToPoint(bottom.position)
-            bottomCirclePath.addQuadCurveToPoint(bottomEndPosition, controlPoint: CGPoint(x: 0, y: middleYPosition - 1))
-
-            let bottomPosition = CAKeyframeAnimation(keyPath: "position")
-            bottomPosition.path = bottomCirclePath.CGPath
-            bottom.ahk_applyKeyframePathAnimation(bottomPosition, endValue: NSValue(CGPoint: bottomEndPosition))
 
             CATransaction.commit()
         }
