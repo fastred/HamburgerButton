@@ -15,11 +15,11 @@ class HamburgerButton: UIButton {
     let top: CAShapeLayer! = CAShapeLayer()
     let middle: CAShapeLayer! = CAShapeLayer()
     let bottom: CAShapeLayer! = CAShapeLayer()
-    let width: Float = 18
-    let height: Float = 16
-    let topYPosition: Float = 2
-    let middleYPosition: Float = 7
-    let bottomYPosition: Float = 12
+    let width: CGFloat = 18
+    let height: CGFloat = 16
+    let topYPosition: CGFloat = 2
+    let middleYPosition: CGFloat = 7
+    let bottomYPosition: CGFloat = 12
 
     init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,7 +32,7 @@ class HamburgerButton: UIButton {
     }
 
     func commonInit() {
-        let lineWidth: Float = 2
+        let lineWidth: CGFloat = 2
 
         let path = UIBezierPath()
         path.moveToPoint(CGPoint(x: 0, y: 0))
@@ -40,7 +40,7 @@ class HamburgerButton: UIButton {
 
         for shapeLayer in [top, middle, bottom] {
             shapeLayer.path = path.CGPath
-            shapeLayer.lineWidth = 2
+            shapeLayer.lineWidth = lineWidth
             shapeLayer.strokeColor = UIColor.whiteColor().CGColor
 
             // Disables implicit animations.
