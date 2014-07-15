@@ -144,12 +144,12 @@ extension CALayer {
 }
 
 func rotationValuesFromTransform(transform: CATransform3D, #endValue: CGFloat) -> [NSValue] {
+    let frames = 4
+
     // values at 0, 1/3, 2/3 and 1
-    return [NSValue(CATransform3D: transform),
-        NSValue(CATransform3D: CATransform3DRotate(transform, endValue / 3, 0, 0, 1)),
-        NSValue(CATransform3D: CATransform3DRotate(transform, endValue / 3 * 2, 0, 0, 1)),
-        NSValue(CATransform3D: CATransform3DRotate(transform, endValue, 0, 0, 1))
-    ]
+    return (0..<frames).map { num in
+        NSValue(CATransform3D: CATransform3DRotate(transform, endValue / CGFloat(frames - 1) * CGFloat(num), 0, 0, 1))
+    }
 }
 
 func quadBezierCurveFromPoint(startPoint: CGPoint, #toPoint: CGPoint, #controlPoint: CGPoint) -> UIBezierPath {
