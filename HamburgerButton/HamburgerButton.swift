@@ -85,7 +85,7 @@ class HamburgerButton: UIButton {
 
             let topPosition = CAKeyframeAnimation(keyPath: "position")
             let topPositionEndPoint = CGPoint(x: width / 2, y: showsMenu ? topYPosition : bottomYPosition + verticalOffsetInRotatedState)
-            topPosition.path = quadBezierCurveFrom(top.position,
+            topPosition.path = quadBezierCurveFromPoint(top.position,
                 toPoint: topPositionEndPoint,
                 controlPoint: CGPoint(x: width, y: positionPathControlPointY)).CGPath
             top.ahk_applyKeyframePathAnimation(topPosition, endValue: NSValue(CGPoint: topPositionEndPoint))
@@ -110,7 +110,7 @@ class HamburgerButton: UIButton {
 
             let bottomPosition = CAKeyframeAnimation(keyPath: "position")
             let bottomPositionEndPoint = CGPoint(x: width / 2, y: showsMenu ? bottomYPosition : topYPosition - verticalOffsetInRotatedState)
-            bottomPosition.path = quadBezierCurveFrom(bottom.position,
+            bottomPosition.path = quadBezierCurveFromPoint(bottom.position,
                 toPoint: bottomPositionEndPoint,
                 controlPoint: CGPoint(x: 0, y: positionPathControlPointY)).CGPath
             bottom.ahk_applyKeyframePathAnimation(bottomPosition, endValue: NSValue(CGPoint: bottomPositionEndPoint))
@@ -151,7 +151,7 @@ func rotationValuesFromTransform(transform: CATransform3D, #endValue: CGFloat) -
     ]
 }
 
-func quadBezierCurveFrom(startPoint: CGPoint, #toPoint: CGPoint, #controlPoint: CGPoint) -> UIBezierPath {
+func quadBezierCurveFromPoint(startPoint: CGPoint, #toPoint: CGPoint, #controlPoint: CGPoint) -> UIBezierPath {
     let quadPath = UIBezierPath()
     quadPath.moveToPoint(startPoint)
     quadPath.addQuadCurveToPoint(toPoint, controlPoint: controlPoint)
