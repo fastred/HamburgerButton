@@ -12,9 +12,9 @@ import UIKit
 
 class HamburgerButton: UIButton {
 
-    let top: CAShapeLayer! = CAShapeLayer()
-    let middle: CAShapeLayer! = CAShapeLayer()
-    let bottom: CAShapeLayer! = CAShapeLayer()
+    let top: CAShapeLayer = CAShapeLayer()
+    let middle: CAShapeLayer = CAShapeLayer()
+    let bottom: CAShapeLayer = CAShapeLayer()
     let width: CGFloat = 18
     let height: CGFloat = 16
     let topYPosition: CGFloat = 2
