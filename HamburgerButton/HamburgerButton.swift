@@ -32,15 +32,13 @@ class HamburgerButton: UIButton {
     }
 
     func commonInit() {
-        let lineWidth: CGFloat = 2
-
         let path = UIBezierPath()
         path.moveToPoint(CGPoint(x: 0, y: 0))
         path.addLineToPoint(CGPoint(x: width, y: 0))
 
         for shapeLayer in [top, middle, bottom] {
             shapeLayer.path = path.CGPath
-            shapeLayer.lineWidth = lineWidth
+            shapeLayer.lineWidth = 2
             shapeLayer.strokeColor = UIColor.whiteColor().CGColor
 
             // Disables implicit animations.
