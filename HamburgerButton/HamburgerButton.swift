@@ -124,16 +124,6 @@ class HamburgerButton: UIButton {
 }
 
 extension CALayer {
-    func ahk_applyAnimation(animation: CABasicAnimation) {
-        let copy = animation.copy() as CABasicAnimation
-        if !copy.fromValue {
-            copy.fromValue = self.presentationLayer().valueForKeyPath(copy.keyPath)
-        }
-
-        self.addAnimation(copy, forKey: copy.keyPath)
-        self.setValue(copy.toValue, forKeyPath:copy.keyPath)
-    }
-
     func ahk_applyKeyframeValuesAnimation(animation: CAKeyframeAnimation) {
         let copy = animation.copy() as CAKeyframeAnimation
 
