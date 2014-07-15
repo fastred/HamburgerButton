@@ -45,8 +45,6 @@ class HamburgerButton: UIButton {
 
             // Disables implicit animations.
             shapeLayer.actions = [
-                "strokeStart": NSNull(),
-                "strokeEnd": NSNull(),
                 "transform": NSNull(),
                 "position": NSNull()
             ]
@@ -74,9 +72,10 @@ class HamburgerButton: UIButton {
             CATransaction.setAnimationDuration(0.4)
             CATransaction.setAnimationTimingFunction(CAMediaTimingFunction(controlPoints: 0.4, 0.0, 0.2, 1.0))
 
-            let strokeStartNewValue = showsMenu ? 0.0 : 0.3
+            let strokeStartNewValue: CGFloat = showsMenu ? 0.0 : 0.3
             let positionPathControlPointY = bottomYPosition / 2
             let verticalOffsetInRotatedState: CGFloat = 0.75
+
 
             let topRotation = CAKeyframeAnimation(keyPath: "transform")
             topRotation.values = rotationValuesFromTransform(top.transform,
@@ -93,9 +92,7 @@ class HamburgerButton: UIButton {
                 controlPoint: CGPoint(x: width, y: positionPathControlPointY)).CGPath
             top.ahk_applyKeyframePathAnimation(topPosition, endValue: NSValue(CGPoint: topPositionEndPoint))
 
-            let topStrokeStart = CABasicAnimation(keyPath: "strokeStart")
-            topStrokeStart.toValue = strokeStartNewValue
-            top.ahk_applyAnimation(topStrokeStart)
+            top.strokeStart = strokeStartNewValue
 
 
             let middleRotation = CAKeyframeAnimation(keyPath: "transform")
@@ -103,9 +100,7 @@ class HamburgerButton: UIButton {
                 endValue: showsMenu ? CGFloat(-M_PI) : CGFloat(M_PI))
             middle.ahk_applyKeyframeValuesAnimation(middleRotation)
 
-            let middleStrokeEnd = CABasicAnimation(keyPath: "strokeEnd")
-            middleStrokeEnd.toValue = showsMenu ? 1.0 : 0.85
-            middle.ahk_applyAnimation(middleStrokeEnd)
+            middle.strokeEnd = showsMenu ? 1.0 : 0.85
 
 
             let bottomRotation = CAKeyframeAnimation(keyPath: "transform")
@@ -122,9 +117,7 @@ class HamburgerButton: UIButton {
                 controlPoint: CGPoint(x: 0, y: positionPathControlPointY)).CGPath
             bottom.ahk_applyKeyframePathAnimation(bottomPosition, endValue: NSValue(CGPoint: bottomPositionEndPoint))
 
-            let bottomStrokeStart = CABasicAnimation(keyPath: "strokeStart")
-            bottomStrokeStart.toValue = strokeStartNewValue
-            bottom.ahk_applyAnimation(bottomStrokeStart)
+            bottom.strokeStart = strokeStartNewValue
 
 
             CATransaction.commit()
