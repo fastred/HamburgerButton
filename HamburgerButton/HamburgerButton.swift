@@ -54,9 +54,10 @@ class HamburgerButton: UIButton {
             layer.addSublayer(shapeLayer)
         }
 
-        top.position = CGPoint(x: width / 2, y: topYPosition)
-        middle.position = CGPoint(x: width / 2, y: middleYPosition)
-        bottom.position = CGPoint(x: width / 2, y: bottomYPosition)
+        let widthMiddle = width / 2
+        top.position = CGPoint(x: widthMiddle, y: topYPosition)
+        middle.position = CGPoint(x: widthMiddle, y: middleYPosition)
+        bottom.position = CGPoint(x: widthMiddle, y: bottomYPosition)
     }
 
     override func intrinsicContentSize() -> CGSize {
