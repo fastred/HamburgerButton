@@ -22,5 +22,9 @@ class ViewController: UIViewController {
     func toggle(sender: AnyObject!) {
         self.button.showsMenu = !self.button.showsMenu
     }
+
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
+    }
 }
 

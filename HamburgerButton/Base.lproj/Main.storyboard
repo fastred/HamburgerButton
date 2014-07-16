@@ -40,7 +40,7 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.28627452250000002" green="0.56078433989999998" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
                         <constraints>
                             <constraint firstItem="m9M-zT-OLJ" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="60" id="2dy-Ql-ivy"/>
                             <constraint firstAttribute="centerY" secondItem="m9M-zT-OLJ" secondAttribute="centerY" id="Oi8-Sf-ems"/>
