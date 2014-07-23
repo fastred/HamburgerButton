@@ -134,7 +134,7 @@ extension CALayer {
         self.setValue(copy.values[copy.values.count - 1], forKeyPath:copy.keyPath)
     }
 
-    // TODO: endValue could be removed from the definition, because it's possible to get it from the path (see: CGPathApply).
+    // Mark: TODO: endValue could be removed from the definition, because it's possible to get it from the path (see: CGPathApply).
     func ahk_applyKeyframePathAnimation(animation: CAKeyframeAnimation, endValue: NSValue) {
         let copy = animation.copy() as CAKeyframeAnimation
 
