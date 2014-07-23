@@ -12,6 +12,14 @@ import UIKit
 
 public class HamburgerButton: UIButton {
 
+    public var color: UIColor = UIColor.whiteColor() {
+    didSet {
+        for shapeLayer in shapeLayers {
+            shapeLayer.strokeColor = color.CGColor
+        }
+    }
+    }
+
     private let top: CAShapeLayer = CAShapeLayer()
     private let middle: CAShapeLayer = CAShapeLayer()
     private let bottom: CAShapeLayer = CAShapeLayer()
@@ -36,10 +44,10 @@ public class HamburgerButton: UIButton {
         path.moveToPoint(CGPoint(x: 0, y: 0))
         path.addLineToPoint(CGPoint(x: width, y: 0))
 
-        for shapeLayer in [top, middle, bottom] {
+        for shapeLayer in shapeLayers {
             shapeLayer.path = path.CGPath
             shapeLayer.lineWidth = 2
-            shapeLayer.strokeColor = UIColor.whiteColor().CGColor
+            shapeLayer.strokeColor = color.CGColor
 
             // Disables implicit animations.
             shapeLayer.actions = [
@@ -121,6 +129,10 @@ public class HamburgerButton: UIButton {
 
             CATransaction.commit()
         }
+    }
+
+    private var shapeLayers: [CAShapeLayer] {
+        return [top, middle, bottom]
     }
 }
 
