@@ -10,16 +10,16 @@ import CoreGraphics
 import QuartzCore
 import UIKit
 
-class HamburgerButton: UIButton {
+public class HamburgerButton: UIButton {
 
-    let top: CAShapeLayer = CAShapeLayer()
-    let middle: CAShapeLayer = CAShapeLayer()
-    let bottom: CAShapeLayer = CAShapeLayer()
-    let width: CGFloat = 18
-    let height: CGFloat = 16
-    let topYPosition: CGFloat = 2
-    let middleYPosition: CGFloat = 7
-    let bottomYPosition: CGFloat = 12
+    private let top: CAShapeLayer = CAShapeLayer()
+    private let middle: CAShapeLayer = CAShapeLayer()
+    private let bottom: CAShapeLayer = CAShapeLayer()
+    private let width: CGFloat = 18
+    private let height: CGFloat = 16
+    private let topYPosition: CGFloat = 2
+    private let middleYPosition: CGFloat = 7
+    private let bottomYPosition: CGFloat = 12
 
     init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,7 +31,7 @@ class HamburgerButton: UIButton {
         commonInit()
     }
 
-    func commonInit() {
+    private func commonInit() {
         let path = UIBezierPath()
         path.moveToPoint(CGPoint(x: 0, y: 0))
         path.addLineToPoint(CGPoint(x: width, y: 0))
@@ -60,11 +60,11 @@ class HamburgerButton: UIButton {
         bottom.position = CGPoint(x: widthMiddle, y: bottomYPosition)
     }
 
-    override func intrinsicContentSize() -> CGSize {
+    override public func intrinsicContentSize() -> CGSize {
         return CGSize(width: width, height: height)
     }
 
-    var showsMenu: Bool = true {
+    public var showsMenu: Bool = true {
         didSet {
             // There's many animations so it's easier to set up duration and timing function at once.
             CATransaction.begin()
