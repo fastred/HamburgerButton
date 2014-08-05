@@ -29,12 +29,12 @@ public class HamburgerButton: UIButton {
     private let middleYPosition: CGFloat = 7
     private let bottomYPosition: CGFloat = 12
 
-    init(frame: CGRect) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
     }
 
-    init(coder aDecoder: NSCoder!) {
+    required public init(coder aDecoder: NSCoder!) {
         super.init(coder: aDecoder)
         commonInit()
     }
