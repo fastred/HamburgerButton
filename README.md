@@ -6,7 +6,7 @@ Hamburger button with a slick animation. See the [accompanying blog post](http:/
 
 ## Usage
 
-Copy `HamburgetButton.swift` to your project. Change the value of its `showsMenu` property.
+Copy `HamburgerButton.swift` to your project. Change the value of its `showsMenu` property.
 
 ## Author
 
