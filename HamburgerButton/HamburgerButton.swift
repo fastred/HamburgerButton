@@ -138,7 +138,7 @@ public class HamburgerButton: UIButton {
 
 extension CALayer {
     func ahk_applyKeyframeValuesAnimation(animation: CAKeyframeAnimation) {
-        let copy = animation.copy() as CAKeyframeAnimation
+        let copy = animation.copy() as! CAKeyframeAnimation
 
         assert(!copy.values.isEmpty)
 
@@ -148,7 +148,7 @@ extension CALayer {
 
     // Mark: TODO: endValue could be removed from the definition, because it's possible to get it from the path (see: CGPathApply).
     func ahk_applyKeyframePathAnimation(animation: CAKeyframeAnimation, endValue: NSValue) {
-        let copy = animation.copy() as CAKeyframeAnimation
+        let copy = animation.copy() as! CAKeyframeAnimation
 
         self.addAnimation(copy, forKey: copy.keyPath)
         self.setValue(endValue, forKeyPath:copy.keyPath)
