@@ -12,6 +12,7 @@
 		A629FF6519741216003FA0FC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A629FF6319741216003FA0FC /* Main.storyboard */; };
 		A629FF6719741216003FA0FC /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A629FF6619741216003FA0FC /* Images.xcassets */; };
 		A629FF7D19741267003FA0FC /* HamburgerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A629FF7C19741267003FA0FC /* HamburgerButton.swift */; };
+		A65426F61BB849AE00BE4618 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A65426F51BB849AE00BE4618 /* Launch Screen.storyboard */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +24,7 @@
 		A629FF6619741216003FA0FC /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A629FF7119741217003FA0FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A629FF7C19741267003FA0FC /* HamburgerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamburgerButton.swift; sourceTree = "<group>"; };
+		A65426F51BB849AE00BE4618 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 				A629FF5F19741216003FA0FC /* AppDelegate.swift */,
 				A629FF7C19741267003FA0FC /* HamburgerButton.swift */,
 				A629FF6619741216003FA0FC /* Images.xcassets */,
+				A65426F51BB849AE00BE4618 /* Launch Screen.storyboard */,
 				A629FF6319741216003FA0FC /* Main.storyboard */,
 				A629FF5D19741216003FA0FC /* Supporting Files */,
 				A629FF6119741216003FA0FC /* ViewController.swift */,
@@ -149,6 +152,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A65426F61BB849AE00BE4618 /* Launch Screen.storyboard in Resources */,
 				A629FF6519741216003FA0FC /* Main.storyboard in Resources */,
 				A629FF6719741216003FA0FC /* Images.xcassets in Resources */,
 			);
@@ -262,7 +266,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = HamburgerButton/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -274,7 +277,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = HamburgerButton/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
