@@ -34,7 +34,7 @@ public class HamburgerButton: UIButton {
         commonInit()
     }
 
-    required public init(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
     }
@@ -55,7 +55,7 @@ public class HamburgerButton: UIButton {
                 "position": NSNull()
             ]
 
-            let strokingPath = CGPathCreateCopyByStrokingPath(shapeLayer.path, nil, shapeLayer.lineWidth, kCGLineCapButt, kCGLineJoinMiter, shapeLayer.miterLimit)
+            let strokingPath = CGPathCreateCopyByStrokingPath(shapeLayer.path, nil, shapeLayer.lineWidth, CGLineCap.Butt, CGLineJoin.Miter, shapeLayer.miterLimit)
             // Otherwise bounds will be equal to CGRectZero.
             shapeLayer.bounds = CGPathGetPathBoundingBox(strokingPath)
 
@@ -138,12 +138,12 @@ public class HamburgerButton: UIButton {
 
 extension CALayer {
     func ahk_applyKeyframeValuesAnimation(animation: CAKeyframeAnimation) {
-        let copy = animation.copy() as! CAKeyframeAnimation
+        guard let copy = animation.copy() as? CAKeyframeAnimation,
+              let values = copy.values where !values.isEmpty,
+              let keyPath = copy.keyPath else { return }
 
-        assert(!copy.values.isEmpty)
-
-        self.addAnimation(copy, forKey: copy.keyPath)
-        self.setValue(copy.values[copy.values.count - 1], forKeyPath:copy.keyPath)
+        self.addAnimation(copy, forKey: keyPath)
+        self.setValue(values[values.count - 1], forKeyPath:keyPath)
     }
 
     // Mark: TODO: endValue could be removed from the definition, because it's possible to get it from the path (see: CGPathApply).
@@ -151,11 +151,11 @@ extension CALayer {
         let copy = animation.copy() as! CAKeyframeAnimation
 
         self.addAnimation(copy, forKey: copy.keyPath)
-        self.setValue(endValue, forKeyPath:copy.keyPath)
+        self.setValue(endValue, forKeyPath:copy.keyPath!)
     }
 }
 
-func rotationValuesFromTransform(transform: CATransform3D, #endValue: CGFloat) -> [NSValue] {
+func rotationValuesFromTransform(transform: CATransform3D, endValue: CGFloat) -> [NSValue] {
     let frames = 4
 
     // values at 0, 1/3, 2/3 and 1
@@ -164,7 +164,7 @@ func rotationValuesFromTransform(transform: CATransform3D, #endValue: CGFloat) -
     }
 }
 
-func quadBezierCurveFromPoint(startPoint: CGPoint, #toPoint: CGPoint, #controlPoint: CGPoint) -> UIBezierPath {
+func quadBezierCurveFromPoint(startPoint: CGPoint, toPoint: CGPoint, controlPoint: CGPoint) -> UIBezierPath {
     let quadPath = UIBezierPath()
     quadPath.moveToPoint(startPoint)
     quadPath.addQuadCurveToPoint(toPoint, controlPoint: controlPoint)
