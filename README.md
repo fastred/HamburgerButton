@@ -1,5 +1,7 @@
 # HamburgerButton
 
+**⚠️ No longer maintained. ⚠️**
+
 Hamburger button with a slick animation. See the [accompanying blog post](http://holko.pl/2014/07/15/hamburger-button-animation/).
 
 ![Demo GIF](https://raw.githubusercontent.com/fastred/HamburgerButton/master/demo.gif)
